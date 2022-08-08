@@ -2,13 +2,36 @@ ion-tab-bar {
     display: none;
 }
 
+.leaflet-popup-content {
+    margin: .5rem;
+    padding: .5rem;
+    min-width: 150px;
+}
+
+.leaflet-popup-content-wrapper {
+    box-shadow: 1px 1px 15px rgba(0, 0, 0, .5);
+    background-color: #6DF9E5;
+    border-radius: 5px;
+    h1 {
+        font-weight: 600;
+        font-size: 1rem;
+        margin: 0;
+    }
+    p {
+        margin: .25rem 0 0 0;
+    }
+}
+
+.leaflet-popup-tip {
+    background-color: #6DF9E5;
+}
+
 .leaflet-container {
     width: 100vw;
     height: 100vh;
-    }
+}
 
-    .yes{
-        font-size: 4em;
-        color: white;
-      
-    }
+.yes {
+    font-size: 4em;
+    color: white;
+}
