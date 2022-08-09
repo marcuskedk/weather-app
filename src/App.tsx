@@ -10,9 +10,10 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
+import { arrowBack, arrowDown, chevronDown, map, listOutline } from 'ionicons/icons';
 import Home from './pages/Home';
 import Weather from './pages/Weather';
+import WeatherLatLon from './pages/WeatherLatLon';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -38,12 +39,29 @@ setupIonicReact();
 const App = () => (
   <IonApp>
     <IonReactRouter>
-      <Route exact path="/">
-        <Home />
-      </Route>
-      <Route exact path="/:lat/:lon">
-        <Weather />
-      </Route>
+      <IonTabs>
+        <IonRouterOutlet>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/:lat/:lon">
+            <WeatherLatLon />
+          </Route>
+          <Route exact path="/weather">
+            <Weather />
+          </Route>
+        </IonRouterOutlet>
+        <IonTabBar slot="bottom">
+          <IonTabButton tab="home" href="/">
+            <IonIcon icon={ map } />
+            <IonLabel>Kort</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="weather" href="/weather">
+            <IonIcon icon={ listOutline } />
+            <IonLabel>Vejr</IonLabel>
+          </IonTabButton>
+        </IonTabBar>
+      </IonTabs>
     </IonReactRouter>
   </IonApp>
 );
