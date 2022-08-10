@@ -13,7 +13,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { arrowBack, arrowDown, chevronDown, map, informationCircle, listOutline } from 'ionicons/icons';
+import { arrowBack, arrowDown, chevronDown, map, informationCircle, listOutline, navigateCircle } from 'ionicons/icons';
 import Home from './pages/Home';
 import Weather from './pages/Weather';
 
@@ -39,6 +39,7 @@ import './theme/myshit.scss';
 import React, { useState, useEffect } from 'react';
 import { useLocalStorage } from 'usehooks-ts'
 import { useGeolocated } from "react-geolocated";
+import {Geolocation} from "@capacitor/geolocation";
 setupIonicReact();
 
 const key = "2864c037ed39e8c864f7c0ab7e3d8a0a";
@@ -49,26 +50,39 @@ const base = {
 }
 
 const App = () => {
-  const [listMenuItem, setListMenuItem] = useLocalStorage('addedToList', []);
+  // const { coords, isGeolocationAvailable, isGeolocationEnabled } =
+  // useGeolocated({
+  //     positionOptions: {
+  //         enableHighAccuracy: false,
+  //     },
+  //     userDecisionTimeout: 0,
+  // });
+  const [ listMenuItem, setListMenuItem ] = useLocalStorage('addedToList', []);
+  const [ loading, setLoading] = useState(true);
+  const [ error, setError] = useState(null);
+  const [ geoLat, setGeoLat] = useLocalStorage('geoLat', []);
+  const [ geoLon, setGeoLon] = useLocalStorage('geoLon', []);
   const [myCoords, setMyCoords] = useState();
-  const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-  useGeolocated({
-      positionOptions: {
-          enableHighAccuracy: false,
-      },
-      userDecisionTimeout: 5000,
-  });
 
-  // console.log(coords.latitude)
-
-  // useEffect(() => {
-  //   axios.get(base.weatherAPI + "&lat=" + coords?.latitude + "&lon=" + coords?.longitude + "&units=metric&lang=da")
-  //   .then( res1 => {
-  //     setMyCoords(res1.data)
-  //     console.log(res1.data)
-  //   })
-  //   .catch((error) => console.error(error));
-  // }, [coords])
+  useEffect(() => {
+    (async () => {
+      try {
+        const coordinates = await Geolocation.getCurrentPosition();
+        setGeoLat(coordinates.coords.latitude);
+        setGeoLon(coordinates.coords.longitude);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    })()
+    axios.get(base.weatherAPI + "&lat=" + geoLat + "&lon=" + geoLon + "&units=metric&lang=da")
+    .then( res1 => {
+      setMyCoords(res1.data)
+    })
+    .catch((error) => console.error(error));
+  }, [])
   
   return (
     <>
@@ -77,7 +91,7 @@ const App = () => {
           <IonTabs>
             <IonRouterOutlet>
               <Route exact path="/">
-                <Home comeatme={setListMenuItem} wack={listMenuItem} />
+                <Home comeatme={setListMenuItem} wack={listMenuItem} geoLat={geoLat} geoLon={geoLon} /> {/* geoLat={myCoords?.latitude} geoLon={myCoords?.longitude} */}
               </Route>
               <Route exact path="/weather/:name">
                 <Weather />
@@ -86,22 +100,22 @@ const App = () => {
                 <Weather />
               </Route>
             </IonRouterOutlet>
-            <IonTabBar slot="bottom">
-              <IonTabButton tab="home" href="/">
+            <IonTabBar slot="bottom" >
+              <IonTabButton tab="home" href="/" mode="ios">
                 <IonIcon icon={ map } />
                 <IonLabel>Kort</IonLabel>
               </IonTabButton>
-              {/* { myCoords && 
-                  <IonTabButton tab={"list" + key} href={"/weather/" + myCoords?.main?.name?.toLowerCase()} className="custom-list" key={key}>
-                    <IonLabel>&bull;</IonLabel>
+              { myCoords && 
+                  <IonTabButton tab={"list" + key} href={"/weather/" + myCoords?.name?.toLowerCase()} className="custom-list" key={key} mode="ios">
+                    <IonIcon color="secondary" icon={ navigateCircle } />
                   </IonTabButton>
-              } */}
+              }
               { listMenuItem && listMenuItem.map((n, key) => (
-                  <IonTabButton tab={"list" + key} href={"/weather/" + n.toLowerCase()} className="custom-list" key={key}>
-                    <IonLabel>&bull;</IonLabel>
+                  <IonTabButton tab={"list" + key} href={"/weather/" + n.toLowerCase()} className="custom-list" key={key} mode="ios">
+                    <IonIcon icon={ informationCircle } />
                   </IonTabButton>
               )) }
-              <IonTabButton tab="weather" href="/weather">
+              <IonTabButton tab="weather" href="/weather" mode="ios">
                 <IonIcon icon={ listOutline } />
                 <IonLabel>Vejr</IonLabel>
                 <IonBadge>6</IonBadge>

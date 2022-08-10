@@ -113,25 +113,6 @@ const WeatherLatLon = () => {
                                 </IonCol>
                                 <IonCol size="3"></IonCol>
                             </IonRow>
-        
-                            {/* <IonRow>
-                                <IonCol size="6">ion-col size="6"</IonCol>
-                                <IonCol>ion-col</IonCol>
-                                <IonCol>ion-col</IonCol>
-                            </IonRow>
-        
-                            <IonRow>
-                                <IonCol size="3">ion-col size="3"</IonCol>
-                                <IonCol>ion-col</IonCol>
-                                <IonCol size="3">ion-col size="3"</IonCol>
-                            </IonRow>
-        
-                            <IonRow>
-                                <IonCol size="3">ion-col size="3"</IonCol>
-                                <IonCol size="3" offset="3">
-                                ion-col size="3" offset="3"
-                                </IonCol>
-                            </IonRow> */}
                         </IonGrid>
                     </IonContent>
                 </>

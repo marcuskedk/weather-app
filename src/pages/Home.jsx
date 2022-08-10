@@ -6,11 +6,12 @@ import L, { popup } from "leaflet"
 import './Home.scss';
 import axios from "axios"
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton } from '@ionic/react';
-const Home = ({comeatme, wack, lat, lon}) => {
-  const [dataLatLon, setDataLatLon] = useState({ lat: 0, lon: 0})
+
+const Home = ({comeatme, wack, geoLat, geoLon}) => {
+  const [dataLatLon, setDataLatLon] = useState({ lat: geoLat, lon: geoLon }); {/* lat: geoLat, lon: geoLon */}
   const [loading, setLoading] = useState(true);
-  const [noData, setNoData] = useState(false)
-  const [data,setData] = useState({})
+  const [noData, setNoData] = useState(false);
+  const [data, setData] = useState({});
   const Cordinates = () => {
     const map = useMapEvents({
       click: (e) => {
