@@ -9,9 +9,11 @@ import { arrowBack, arrowDown, chevronDown, map, listOutline } from 'ionicons/ic
 import "./WeatherLatLon.scss";
 import '@ionic/react/css/ionic-swiper.css';
 
+const key = "2864c037ed39e8c864f7c0ab7e3d8a0a";
+
 const base = {
-    weatherAPI: "https://api.openweathermap.org/data/2.5/weather?appid=2864c037ed39e8c864f7c0ab7e3d8a0a",
-    forecastAPI: "https://api.openweathermap.org/data/2.5/forecast?appid=2864c037ed39e8c864f7c0ab7e3d8a0a"
+    weatherAPI: "https://api.openweathermap.org/data/2.5/weather?appid=" + key,
+    forecastAPI: "https://api.openweathermap.org/data/2.5/forecast?appid=" + key
 }
 
 const WeatherLatLon = () => {
@@ -27,10 +29,12 @@ const WeatherLatLon = () => {
     useEffect(() => {
         axios.get(base.weatherAPI + "&lat=" + lat + "&lon=" + lon + "&units=metric&lang=da")
         .then( res1 => {
-            setWeather(res1.data)
+            setWeather(res1.data);
 
             axios.get(base.forecastAPI + "&lat=" + lat + "&lon=" + lon + "&units=metric&lang=da")
-            .then( res2 => setForecast(res2.data))
+            .then( res2 => {
+                setForecast(res2.data);
+            })
             .catch((error) => console.error(error));
         })
         .catch((error) => console.error(error));
@@ -54,24 +58,24 @@ const WeatherLatLon = () => {
                 <>
                     <IonContent className="clouds">
                         <div id="background-wrap">
-                            <div class="x1">
-                                <div class="cloud"></div>
+                            <div className="x1">
+                                <div className="cloud"></div>
                             </div>
 
-                            <div class="x2">
-                                <div class="cloud"></div>
+                            <div className="x2">
+                                <div className="cloud"></div>
                             </div>
 
-                            <div class="x3">
-                                <div class="cloud"></div>
+                            <div className="x3">
+                                <div className="cloud"></div>
                             </div>
 
-                            <div class="x4">
-                                <div class="cloud"></div>
+                            <div className="x4">
+                                <div className="cloud"></div>
                             </div>
 
-                            <div class="x5">
-                                <div class="cloud"></div>
+                            <div className="x5">
+                                <div className="cloud"></div>
                             </div>
                         </div>
                         <IonGrid className="weather-grid">

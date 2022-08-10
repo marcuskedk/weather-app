@@ -5,9 +5,8 @@ import ExploreContainer from '../components/ExploreContainer';
 import L, { popup } from "leaflet"
 import './Home.scss';
 import axios from "axios"
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent } from '@ionic/react';
-
-const Home = () => {
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton } from '@ionic/react';
+const Home = ({comeatme, wack, lat, lon}) => {
   const [dataLatLon, setDataLatLon] = useState({ lat: 0, lon: 0})
   const [loading, setLoading] = useState(true);
   const [noData, setNoData] = useState(false)
@@ -40,7 +39,18 @@ const Home = () => {
       iconAnchor: [10, 35],
       popupAnchor: [0, -30],
     }));
-  },[])
+  },[]);
+
+  // localStorage.clear();
+  // sessionStorage.clear();
+  const handleSetData = (sessionData) => {
+    var a = wack;
+    var data = wack.filter((val) => val.includes(sessionData));
+    if (!data.length) {
+      a.push(sessionData);
+      comeatme(a);
+    }
+  }
 
   return (
     <div id="content">
@@ -52,7 +62,8 @@ const Home = () => {
               <h1>{data?.name}</h1>
               <p>Tempratur: {data?.main?.temp}°C</p>
               <p>Luftfugtighed: {data?.main?.humidity}</p>
-              <a href={ dataLatLon.lat + "/" + dataLatLon.lon }>Gå til</a>
+              <a href={ "/weather/" + data?.name?.toLowerCase() }>Gå til</a>
+              <IonButton onClick={e => handleSetData(data?.name)}></IonButton>
             </> 
           </Popup>
         </Marker>
