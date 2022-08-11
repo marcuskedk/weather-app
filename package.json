@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@awesome-cordova-plugins/native-page-transitions": "^5.44.0",
     "@capacitor/app": "4.0.1",
     "@capacitor/core": "4.0.1",
     "@capacitor/geolocation": "^4.0.1",
@@ -21,6 +22,7 @@
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
     "axios": "^0.27.2",
+    "com.telerik.plugins.nativepagetransitions": "^0.7.0",
     "ionicons": "^5.4.0",
     "leaflet": "^1.8.0",
     "leaflet.locatecontrol": "^0.76.1",
@@ -30,6 +32,7 @@
     "react-geolocated": "^4.0.3",
     "react-leaflet": "^4.0.1",
     "react-leaflet-locate-control": "^0.1.6",
+    "react-navigation-fluid-transitions": "^0.3.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^5.0.0",

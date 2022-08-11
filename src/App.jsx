@@ -39,7 +39,8 @@ import './theme/myshit.scss';
 import React, { useState, useEffect } from 'react';
 import { useLocalStorage } from 'usehooks-ts'
 import { useGeolocated } from "react-geolocated";
-import {Geolocation} from "@capacitor/geolocation";
+import { Geolocation } from "@capacitor/geolocation";
+// import { FluidNavigator, StackNavigator, transitionInfo } from "react-navigation-fluid-transitions";
 setupIonicReact();
 
 const key = "2864c037ed39e8c864f7c0ab7e3d8a0a";
@@ -83,6 +84,15 @@ const App = () => {
     })
     .catch((error) => console.error(error));
   }, [])
+
+  // const myCustomTransitionFunction = (transitionInfo) => {
+  //   const { progress, start, end } = transitionInfo;
+  //   const scaleInterpolation = progress.interpolate({
+  //     inputRange: [0, start, end, 1],
+  //     outputRange: [88, 80, 1, 1],
+  //   });
+  //   return { transform: [{ scale: scaleInterpolation }] };
+  // }
   
   return (
     <>
@@ -94,13 +104,15 @@ const App = () => {
                 <Home comeatme={setListMenuItem} wack={listMenuItem} geoLat={geoLat} geoLon={geoLon} /> {/* geoLat={myCoords?.latitude} geoLon={myCoords?.longitude} */}
               </Route>
               <Route exact path="/weather/:name">
-                <Weather />
+                {/* <Transition appear="horizontal"> */}
+                  <Weather />
+                {/* </Transition> */}
               </Route>
               <Route exact path="/weather">
                 <Weather />
               </Route>
             </IonRouterOutlet>
-            <IonTabBar slot="bottom" >
+            <IonTabBar slot="bottom">
               <IonTabButton tab="home" href="/" mode="ios">
                 <IonIcon icon={ map } />
                 <IonLabel>Kort</IonLabel>
