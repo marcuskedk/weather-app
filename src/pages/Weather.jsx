@@ -124,7 +124,7 @@ const Weather = () => {
                         { WA_Current?.location?.name }
                       </p>
                       <p className="text-center text-white fs-1 mb-0 mt-0 fw-700">
-                        { Math.round(WA_Current?.current?.temp_c) }&deg;
+                        { Math.round(WA_Forecast?.forecast?.forecastday[0]?.day?.maxtemp_c) }&deg;
                       </p>
                       <p className="text-center text-white fs-4 mt-0 big-letter-start">
                         { WA_Current?.current?.condition?.text }<br />
