@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 
 import { useParams } from 'react-router-dom';
-import { IonGrid, IonRow, IonCol, IonContent, IonCardContent, IonFooter, IonHeader, IonToolbar, IonSearchbar, IonTitle, IonCard } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonContent, IonCardContent, IonIcon, IonFooter, IonHeader, IonToolbar, IonSearchbar, IonTitle, IonCard } from '@ionic/react';
+import { sunnyOutline } from "ionicons/icons";
 import '@ionic/react/css/ionic-swiper.css';
 import 'swiper/css';
 import WeatherSlider from "../components/WeatherSlider";
@@ -27,28 +28,29 @@ const Weather = () => {
   const [ WA_Current, setWA_Current ] = useState('');
   const [ WA_Forecast, setWA_Forecast ] = useState('');
 
-  // const currentDate = new Date();
-  // const day = currentDate.getDate();
-  // const month = currentDate.getMonth() + 1;
-  // const year = currentDate.getFullYear();
-  // const hours = currentDate.getHours();
-  // const minute = currentDate.getMinutes();
-
   var type = "";
-  if (location.name) {
-    type = location.name;
+  var lat = "";
+  var lon = "";
+  if (location.lat) {
+    type = location.lat + "," + location.lon;
+    lat = location.lat;
+    lon = location.lon;
   } else {
     if (searchText.length > 0) {
       type = searchText;
+      lat = "56.4";
+      lon = "10.89";
     } else {
       type = "Grenaa";
+      lat = "56.4";
+      lon = "10.89";
     }
   }
 
   useEffect(() => {
-      axios.get(base.weatherAPI + "&q=" + type + "&units=metric&lang=da")
+      axios.get(base.weatherAPI_C + "&q=" + lat + "," + lon + "&units=metric&lang=da")
       .then( res1 => {
-        if (location.name) {
+        if (location.lat) {
           setWeatherByName(res1.data)
         } else {
           setWeatherBySearch(res1.data)
@@ -116,105 +118,121 @@ const Weather = () => {
             </div>
         </div>
         <IonGrid className="weather-grid">
-            <IonRow className="ion-justify-content-center">
-                <IonCol size-md="6">
-                  <IonRow className="ion-justify-content-center">
-                    <IonCol size="12">
-                      <p className="text-center text-white fs-3 mb-0 mt-0 fw-400">
-                        { WA_Current?.location?.name }
-                      </p>
-                      <p className="text-center text-white fs-1 mb-0 mt-0 fw-700">
-                        { Math.round(WA_Forecast?.forecast?.forecastday[0]?.day?.maxtemp_c) }&deg;
-                      </p>
-                      <p className="text-center text-white fs-4 mt-0 big-letter-start">
-                        { WA_Current?.current?.condition?.text }<br />
-                        H: { Math.round(WA_Forecast?.forecast?.forecastday[0]?.day?.maxtemp_c) }&deg;  L: { Math.round(WA_Forecast?.forecast?.forecastday[0]?.day?.mintemp_c) }&deg;
-                      </p>
-                    </IonCol>
-                    <IonCol size="12" className="fs-4">
-                        <IonCard className="bg-custom text-white rounded-custom">
-                            <IonCardContent className="text-custom fw-400">
-                                VEJRUDSIGT FOR RESTEN AF DAGEN.
-                                <hr className="bg-custom-2" />
-                            </IonCardContent>
-                            <WeatherSlider type={ type } days={ 1 } option="slider" />
-                        </IonCard>
-                    </IonCol>
-                  <IonCol size="12" className="fs-4">
-                    <IonCard className="bg-custom text-white rounded-custom">
+          <IonRow className="ion-justify-content-center">
+              <IonCol size-md="6">
+                <IonRow className="ion-justify-content-center">
+                  <IonCol size="12">
+                    <p className="text-center text-white fs-5 mb-0 mt-0 fw-500">
+                      { WA_Current?.location?.country + ", " + WA_Current?.location?.region }
+                    </p>
+                    <p className="text-center text-white fs-3 mb-0 mt-0 fw-400">
+                      { WA_Current?.location?.name }
+                    </p>
+                    <p className="text-center text-white fs-1 mb-0 mt-0 fw-700">
+                      { Math.round(WA_Forecast?.current?.temp_c) }&deg;
+                    </p>
+                    <p className="text-center text-white fs-4 mt-0 big-letter-start">
+                      { WA_Current?.current?.condition?.text }<br />
+                      H: { Math.round(WA_Forecast?.forecast?.forecastday[0]?.day?.maxtemp_c) }&deg;  L: { Math.round(WA_Forecast?.forecast?.forecastday[0]?.day?.mintemp_c) }&deg;
+                    </p>
+                  </IonCol>
+                  <IonCol size="12" className="card-custom-h">
+                    <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
+                      <IonCardContent className="text-custom fw-400">
+                        <h4 className="text-custom fw-400 d-flex">VEJRUDSIGT FOR RESTEN AF DAGEN.</h4>
+                        <hr className="bg-custom-2 w-100" />
+                        <div className="">
+                          <WeatherSlider type={ type } days={ 1 } option="slider" />
+                        </div>
+                      </IonCardContent>
+                    </IonCard>
+                  </IonCol>
+                  <IonCol size="12" className="card-custom-h">
+                    <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="pb-0 text-custom fw-400">
-                        VEJRUDSIGT FOR DE NÆSTE 10 DAGE.
-                        <hr className="bg-custom-2" />
+                        <h4 className="text-custom fw-400 d-flex">VEJRUDSIGT FOR DE NÆSTE 10 DAGE.</h4>
+                        <hr className="bg-custom-2 w-100" />
+                        <WeatherSlider type={ type } days={ 10 } option="list" />
                       </IonCardContent>
-                      <WeatherSlider type={ type } days={ 10 } option="list" />
                     </IonCard>
                   </IonCol>
-                  <IonCol size="6" size-md="6" className="fs-4">
-                    <IonCard className="bg-custom text-white rounded-custom">
+                  <IonCol size="6" size-md="6" className="card-custom-h">
+                    <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
-                        UV-INDEKS
+                        <h4 className="text-custom fw-400 d-flex"><IonIcon className="me-1" icon={ sunnyOutline } /> UV-INDEKS</h4>
                         <p>{ WA_Current?.current?.uv }</p>
-                        <img src={ WA_Current?.current?.condition?.icon } alt="" />
+                        <p>{ WA_Current?.current?.uv > 6 ? <span>Høj</span> : <span>Moderat</span> }</p>
+                        <p>Brug solbeskyttelse indtil 17:00</p>
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
-                  <IonCol size="6" size-md="6" className="fs-4">
-                    <IonCard className="bg-custom text-white rounded-custom">
+                  <IonCol size="6" size-md="6" className="card-custom-h">
+                    <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
-                        SOLNEDGANG
-                        <hr className="bg-white" />
+                        <h4 className="text-custom fw-400 d-flex"><IonIcon className="me-1" icon={ sunnyOutline } />SOLNEDGANG</h4>
+                        <p className="mt-auto">Sol op: { WA_Forecast?.forecast?.forecastday[0]?.astro?.sunrise.slice(0, 5) }</p>
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
-                  <IonCol size="6" size-md="6" className="fs-4">
-                    <IonCard className="bg-custom text-white rounded-custom">
+                  <IonCol size="6" size-md="6" className="card-custom-h">
+                    <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
-                        VIND
-                        <hr className="bg-white" />
+                        <h4 className="text-custom fw-400">VIND</h4>
+                        {/* <p>{ WA_Current?.current?.wind_dir }</p> */}
+                        <div className="compass">
+                          <div className="compass-circle">
+                            <img src="../../assets/compass-circle.svg" alt="" />
+                          </div>
+                          <div className="circle"></div>
+                          <span className="incircle-text"><b>{ WA_Current?.current?.vis_miles }</b><span className="second">m/s</span></span>
+                          <div className="arrow">
+                            <img src="../../assets/arrow-n.png" className={ "direction-" + WA_Current?.current?.wind_dir } style={{transform: `rotate(${WA_Current?.current?.wind_degree}deg)`}} alt="" />
+                          </div>
+                        </div>
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
-                  <IonCol size="6" size-md="6" className="fs-4">
-                    <IonCard className="bg-custom text-white rounded-custom">
+                  <IonCol size="6" size-md="6" className="card-custom-h">
+                    <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
-                        REGN
-                        <hr className="bg-white" />
+                        <h4 className="text-custom fw-400">REGN</h4>
+                        <p className="fs-2">{ WA_Current?.current?.precip_mm } mm</p>
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
-                  <IonCol size="6" size-md="6" className="fs-4">
-                    <IonCard className="bg-custom text-white rounded-custom">
+                  <IonCol size="6" size-md="6" className="card-custom-h">
+                    <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
                         FØLES SOM
-                        <hr className="bg-white" />
+                        <p className="fs-2">{ Math.round(WA_Current?.current?.feelslike_c) }&deg;</p>
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
-                  <IonCol size="6" size-md="6" className="fs-4">
-                    <IonCard className="bg-custom text-white rounded-custom">
+                  <IonCol size="6" size-md="6" className="card-custom-h">
+                    <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
                       LUFTFUGTIGHED
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
-                  <IonCol size="6" size-md="6" className="fs-4">
-                    <IonCard className="bg-custom text-white rounded-custom">
+                  <IonCol size="6" size-md="6" className="card-custom-h">
+                    <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
                         SIGTBARHED
                         <hr className="bg-white" />
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
-                  <IonCol size="6" size-md="6" className="fs-4">
-                    <IonCard className="bg-custom text-white rounded-custom">
+                  <IonCol size="6" size-md="6" className="card-custom-h">
+                    <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
                         LUFTTRYK
                         <hr className="bg-white" />
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
-                  <IonCol size="6" size-md="6" className="fs-4">
-                    <IonCard className="bg-custom text-white rounded-custom">
+                  <IonCol size="6" size-md="6" className="card-custom-h">
+                    <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
                         <h2>Rapporter et problem</h2>
                         <p>Du kan beskrive de...</p>
@@ -222,20 +240,18 @@ const Weather = () => {
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
-                  <IonCol size="6" size-md="6" className="fs-4">
-                    <IonCard className="bg-custom text-white rounded-custom">
+                  <IonCol size="6" size-md="6" className="card-custom-h">
+                    <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
                       Åben i kort
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
-                  <IonCol size="6" size-md="6" className="fs-4">
-                    <IonCard className="bg-custom text-white rounded-custom">
-                      <IonCardContent className="">
-                      Vejroplysninger for Ydesvej 
+                  <IonCol size="12" size-md="12" className="card-custom-h">
+                    <IonCardContent className="text-center">
+                      Vejroplysninger for Ydesvej<br />
                       <a href="">Læs mere om vejrdata og kortdata</a>
-                      </IonCardContent>
-                    </IonCard>
+                    </IonCardContent>
                   </IonCol>
                 </IonRow>
               </IonCol>

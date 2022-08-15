@@ -22,10 +22,15 @@ const Home = ({comeatme, wack, geoLat, geoLon}) => {
     })
     return null
   }
-  const base = ("https://api.openweathermap.org/data/2.5/weather?appid=2864c037ed39e8c864f7c0ab7e3d8a0a") 
+  // const base = ("https://api.openweathermap.org/data/2.5/weather?appid=2864c037ed39e8c864f7c0ab7e3d8a0a") 
+  const base = ("https://api.weatherapi.com/v1/current.json?key=444f6a125e314ab392590227221208") 
   useEffect(() => {
-    axios.get(base + "&lat=" + dataLatLon.lat + "&lon=" + dataLatLon.lon + "&units=metric")
-    .then( res => setData(res.data))
+    axios.get(base + "&q=" + dataLatLon.lat + "," + dataLatLon.lon + "&units=metric&lang=da")
+    .then( res => {
+      setData(res.data)
+
+      console.log(res.data)
+  })
     .catch((error) => console.error(error));
   }, [dataLatLon]);
   
@@ -60,11 +65,11 @@ const Home = ({comeatme, wack, geoLat, geoLon}) => {
         <Marker position={dataLatLon} icon={myspot}>
           <Popup>
             <> 
-              <h1>{data?.name}</h1>
-              <p>Tempratur: {data?.main?.temp}°C</p>
-              <p>Luftfugtighed: {data?.main?.humidity}</p>
-              <a href={ "/weather/" + data?.name?.toLowerCase() }>Gå til</a>
-              <IonButton onClick={e => handleSetData(data?.name)}></IonButton>
+              <h1>{ data?.location?.name }</h1>
+              <p>Tempratur: { data?.current?.temp_c }°</p>
+              <p>Luftfugtighed: { data?.current?.humidity }</p>
+              <a href={ "/weather/" + data?.location?.lat + "/" + data?.location?.lon }>Gå til</a>
+              <IonButton onClick={e => handleSetData(data?.location?.lat + "/" + data?.location?.lon)}></IonButton>
             </> 
           </Popup>
         </Marker>

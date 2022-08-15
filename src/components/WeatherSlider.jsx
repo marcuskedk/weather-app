@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { useLocation, useParams, Link, Route } from 'react-router-dom';
 import { IonGrid, IonRow, IonCol, IonContent, IonProgressBar, IonList, IonCardContent, IonFooter, IonIcon, IonModal, IonHeader, IonButton, IonThumbnail, IonButtons, IonItem, IonToolbar, IonSearchbar, IonTitle, IonLabel, IonInput, IonTabButton, IonTabs, IonTabBar, IonRouterOutlet, IonCard } from '@ionic/react';
 import { arrowBack, arrowDown, chevronDown, map, listOutline, cloudyNight, keyOutline } from 'ionicons/icons';
+import { useWindowSize } from "usehooks-ts";
 import '@ionic/react/css/ionic-swiper.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -25,6 +26,7 @@ const base = {
 
 const WeatherSlider = ({type, days, option}) => {
     const location = useParams();
+    const { width, height } = useWindowSize()
 
     const [ WA_Forecast, setWA_Forecast ] = useState('');
     
@@ -48,7 +50,7 @@ const WeatherSlider = ({type, days, option}) => {
 
     const slider = (
         <>
-            <Swiper slidesPerView={6} className="custom-slider" mode="ios" initialSlide={0}>
+            <Swiper slidesPerView={ width > 1100 ? 6 : width > 767 ? 3 : 5 } className="custom-slider" mode="ios" initialSlide={0}>
                 { WA_Forecast?.forecast?.forecastday[0]?.hour?.slice(0, 27).map((n, key) => (
                     new Date(n?.time).toLocaleTimeString( 'da-dk', { hour: "2-digit" }) > hours - 1 &&
                     <SwiperSlide key={key}> {/* 27 */}
@@ -65,21 +67,23 @@ const WeatherSlider = ({type, days, option}) => {
 
     const list = (
         <>
-            { WA_Forecast?.forecast?.forecastday?.map((n, key) => (
-                <IonItem className="bg-custom" color="transperent" key={key}>
-                    <IonLabel>
-                        <p className="big-letter-start fw-500">{ key == 0 ? <span>I dag</span> : <span>{ new Date(n?.date).toLocaleDateString( 'da-dk', { weekday: 'short' })}.</span>}</p>
-                    </IonLabel>
-                    <IonLabel>
-                        <img src={ n?.day?.condition?.icon } height="30px" alt="" />
-                    </IonLabel>
-                    <IonLabel slot="end" className="d-flex custom-progressbar">
-                        <p className="pe-3 d-inline-flex dont-text-overflow text-custom fw-500">{ Math.round(n?.day?.mintemp_c) }&deg;</p>
-                        <IonProgressBar mode="ios" color="warning" value={"0." + Math.round(n?.day?.mintemp_c * 3.5)} buffer={"0." + Math.round(n?.day?.maxtemp_c * 3.5)}></IonProgressBar>
-                        <p className="ps-3 d-inline-flex dont-text-overflow fw-500">{ Math.round(n?.day?.maxtemp_c) }&deg;</p>
-                    </IonLabel>
-                </IonItem>
-            ) ) }
+            <div className="weather-for-days">
+                { WA_Forecast?.forecast?.forecastday?.map((n, key) => (
+                    <IonRow className="ion-align-center border-me" key={ key }>
+                        <IonCol size-md="2" size="12" className="text-white d-flex align-items-center p-0 py-2">
+                            <p className="big-letter-start fw-500">{ key == 0 ? <span>I dag</span> : <span>{ new Date(n?.date).toLocaleDateString( 'da-dk', { weekday: 'short' })}.</span>}</p>
+                        </IonCol>
+                        <IonCol size-md="2" size="12" className="d-flex align-items-center p-0 py-2">
+                            <img src={ n?.day?.condition?.icon } height="30px" alt="" />
+                        </IonCol>
+                        <IonCol size-md="6" size="12" className="d-flex align-items-center p-0 py-2 ms-auto">
+                            <p className="pe-3 d-inline-flex dont-text-overflow text-custom fw-500">{ Math.round(n?.day?.mintemp_c) }&deg;</p>
+                            <IonProgressBar mode="ios" color="warning" value={"0." + Math.round(n?.day?.mintemp_c * 3.5)} buffer={"0." + Math.round(n?.day?.maxtemp_c * 3.5)}></IonProgressBar>
+                            <p className="ps-3 d-inline-flex dont-text-overflow fw-500 text-white">{ Math.round(n?.day?.maxtemp_c) }&deg;</p>
+                        </IonCol>
+                    </IonRow>
+                ) ) }
+            </div>
         </>
     )
 
