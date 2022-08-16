@@ -55,9 +55,10 @@ const WeatherSlider = ({type, days, option}) => {
                     new Date(n?.time).toLocaleTimeString( 'da-dk', { hour: "2-digit" }) > hours - 1 &&
                     <SwiperSlide key={key}> {/* 27 */}
                         <div className="weather-item">
-                            <div className="litle-down2">{ new Date(n?.time).toLocaleTimeString( 'da-dk', { hour: "2-digit" }) == hours ? <span>Nu</span> : new Date(n?.time).toLocaleTimeString( 'da-dk', { hour: "2-digit", minute: "2-digit" }) }</div>
+                            <div className="litle-down2 text-white">{ new Date(n?.time).toLocaleTimeString( 'da-dk', { hour: "2-digit" }) == hours ? <span>Nu</span> : new Date(n?.time).toLocaleTimeString( 'da-dk', { hour: "2-digit", minute: "2-digit" }) }</div>
                             <img src={ n?.condition?.icon } alt="" />
-                            <div className="litle-up">{ Math.round(n?.temp_c) }&deg;</div>
+                            { n?.will_it_rain == 1 ? <div className="chance-for-rain">R: { n?.chance_of_rain } %</div> : n?.will_it_snow == 1 && <div className="chance-for-rain">S: { n?.chance_of_snow } %</div> }
+                            <div className="litle-up text-white">{ Math.round(n?.temp_c) }&deg;</div>
                         </div>
                     </SwiperSlide>
                 ) ) }
@@ -75,10 +76,14 @@ const WeatherSlider = ({type, days, option}) => {
                         </IonCol>
                         <IonCol size-md="2" size="12" className="d-flex align-items-center p-0 py-2">
                             <img src={ n?.day?.condition?.icon } height="30px" alt="" />
+                            <span>{ n?.day?.daily_will_it_rain == 1 ? <div className="chance-for-rain">R: { n?.day?.daily_chance_of_rain } %</div> : n?.day?.daily_will_it_snow == 1 && <div className="chance-for-rain">S: { n?.day?.daily_chance_of_snow } %</div> }</span>
                         </IonCol>
                         <IonCol size-md="6" size="12" className="d-flex align-items-center p-0 py-2 ms-auto">
                             <p className="pe-3 d-inline-flex dont-text-overflow text-custom fw-500">{ Math.round(n?.day?.mintemp_c) }&deg;</p>
-                            <IonProgressBar mode="ios" color="warning" value={"0." + Math.round(n?.day?.mintemp_c * 3.5)} buffer={"0." + Math.round(n?.day?.maxtemp_c * 3.5)}></IonProgressBar>
+                            <div className="temperature-gauge">
+                                <div className="bar" style={{width: `55.3%`, left: `22.35%`, right: `22.35%`}}></div>
+                                <div className="dot" style={{left: `calc(22.35% + ${n?.day?.maxtemp_c}%)`}}></div>
+                            </div>
                             <p className="ps-3 d-inline-flex dont-text-overflow fw-500 text-white">{ Math.round(n?.day?.maxtemp_c) }&deg;</p>
                         </IonCol>
                     </IonRow>

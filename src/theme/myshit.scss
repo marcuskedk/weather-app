@@ -5,6 +5,41 @@
 	font-weight: 400;
 }
 
+
+.leaflet-popup-content {
+    margin: .5rem;
+    padding: .5rem;
+    min-width: 150px;
+}
+
+.leaflet-popup-content-wrapper {
+    box-shadow: 1px 1px 15px rgba(0, 0, 0, .5);
+    background-color: #6DF9E5;
+    border-radius: 5px;
+    h1 {
+        font-weight: 600;
+        font-size: 1rem;
+        margin: 0;
+    }
+    p {
+        margin: .25rem 0 0 0;
+    }
+}
+
+.leaflet-popup-tip {
+    background-color: #6DF9E5;
+}
+
+.leaflet-container {
+    width: 100vw;
+    height: 100vh;
+}
+
+.yes {
+    font-size: 4em;
+    color: white;
+}
+
 .text-center {
 	text-align: center;
 }
@@ -144,6 +179,30 @@
 		border-radius: 150px;
 		height: calc(100% - 50%);
 		width: calc(100% - 50%);
+		.N {
+			position: absolute;
+			top: -14px;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+		.E {
+			position: absolute;
+			top: 50%;
+			left: 91px;
+			transform: translate(-50%, -50%);
+		}
+		.S {
+			position: absolute;
+			top: 91px;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+		.W {
+			position: absolute;
+			top: 50%;
+			left: -14px;
+			transform: translate(-50%, -50%);
+		}
 	}
 	.incircle-text {
 		position: absolute;
@@ -168,55 +227,10 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 		z-index: -1;
+		img {
+			transition: all .3s;
+		}
 	}
-	// .direction-W {
-	// 	transform: rotate(0deg);
-	// }
-	// .direction-WNW {
-	// 	transform: rotate(22.5deg);
-	// }
-	// .direction-NW {
-	// 	transform: rotate(45deg);
-	// }
-	// .direction-NNW {
-	// 	transform: rotate(76.5deg);
-	// }
-	// .direction-N {
-	// 	transform: rotate(90deg);
-	// }
-	// .direction-NNE {
-	// 	transform: rotate(112.5deg);
-	// }
-	// .direction-NE {
-	// 	transform: rotate(135deg);
-	// }
-	// .direction-ENE {
-	// 	transform: rotate(175.5deg);
-	// }
-	// .direction-E {
-	// 	transform: rotate(180deg);
-	// }
-	// .direction-ESE {
-	// 	transform: rotate(202.5deg);
-	// }
-	// .direction-SE {
-	// 	transform: rotate(225deg);
-	// }
-	// .direction-SSE {
-	// 	transform: rotate(247.5deg);
-	// }
-	// .direction-S {
-	// 	transform: rotate(270deg);
-	// }
-	// .direction-SSW {
-	// 	transform: rotate(292.5deg);
-	// }
-	// .direction-SW {
-	// 	transform: rotate(315deg);
-	// }
-	// .direction-WSW {
-	// 	transform: rotate(337.5deg);
-	// }
 }
 
 .card-custom-h {
@@ -280,27 +294,27 @@
 }
 
 .fs-1 {
-	font-size: 5.5rem;
+	font-size: 5.5rem !important;
 }
 
 .fs-3 {
-	font-size: 2.5rem;
+	font-size: 2.5rem !important;
 }
 
 .fs-4 {
-	font-size: 1.75rem;
+	font-size: 1.75rem !important;
 }
 
 .fs-5 {
-	font-size: 1.5rem;
+	font-size: 1.5rem !important;
 }
 
 .fs-6 {
-	font-size: 1.25rem;
+	font-size: 1.25rem !important;
 }
 
 .fs-7 {
-	font-size: 1rem;
+	font-size: 1rem !important;
 }
 
 .fw-bold {
@@ -319,10 +333,6 @@
 .weather-grid {
 	padding-top: 5rem;
 }
-
-// .swiper-wrapper {
-// 	display: flex;
-// }
 
 .weather-for-days .border-me:last-child {
 	border-bottom: 0 !important;
@@ -367,10 +377,65 @@
 	padding-bottom: 0;
 }
 
+.float-end {
+	float: right;
+}
+
+.tab-flag {
+	width: 25px;
+	border-radius: 160px;
+}
+
+.temperature-gauge {
+	position: relative;
+	width: 100%;
+	height: 5px;
+	border-radius: 150px;
+	background: rgba(255, 255, 255, .3);
+	.bar {
+		position: absolute;
+		height: 5px;
+		border-radius: 150px;
+		background: linear-gradient(to right, #39D154, #FEC907, #FF772A, #FB3868, #C655E2);
+	}
+	.dot {
+		position: absolute;
+		left: 18px;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		background: #fff;
+		height: 12px;
+		width: 12px;
+		border-radius: 150px;
+		border: 3px solid #4184C7;
+	}
+}
+
+.uv-index-gauge {
+	position: relative;
+	width: 100%;
+	height: 5px;
+	border-radius: 150px;
+	background: linear-gradient(to right, #39D154, #FEC907, #FF772A, #FB3868, #C655E2);
+	.dot {
+		position: absolute;
+		left: 18px;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		background: #fff;
+		height: 12px;
+		width: 12px;
+		border-radius: 150px;
+		border: 3px solid #4184C7;
+	}
+}
+
 .weather-item {
 	// margin-top: -15px;
-	padding-bottom: 10px;
 	font-size: 1.05rem;
+	display: flex;
+	flex-direction: column;
+	min-height: 135px;
 
 	// .litle-down1 {
 	// 	margin-bottom: -5px;
@@ -380,8 +445,12 @@
 	// 	margin-bottom: -10px;
 	// }
 
+	.chance-for-rain {
+		font-size: .85rem;
+	}
+
 	.litle-up {
-		margin-top: -10px;
+		margin-top: auto;
 	}
 }
 

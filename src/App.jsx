@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import {
   IonApp,
   IonIcon,
@@ -42,13 +42,10 @@ import { Geolocation } from "@capacitor/geolocation";
 setupIonicReact();
 
 const key = {
-  weatherapi: "444f6a125e314ab392590227221208",
-  openweatherapi: "2864c037ed39e8c864f7c0ab7e3d8a0a"
+  weatherapi: "444f6a125e314ab392590227221208"
 }
 
 const base = {
-  weatherAPI: "https://api.openweathermap.org/data/2.5/weather?appid=" + key.openweatherapi,
-  forecastAPI: "https://api.openweathermap.org/data/2.5/forecast?appid=" + key.openweatherapi,
   weatherAPI_C: "https://api.weatherapi.com/v1/current.json?key=" + key.weatherapi,
   weatherAPI_F: "https://api.weatherapi.com/v1/forecast.json?key=" + key.weatherapi
 }
@@ -87,7 +84,7 @@ const App = () => {
         <IonReactRouter>
           <IonTabs>
             <IonRouterOutlet>
-              <Route exact path="/">
+              <Route exact path="/map">
                 <Home comeatme={setListMenuItem} wack={listMenuItem} geoLat={geoLat} geoLon={geoLon} /> {/* geoLat={myCoords?.latitude} geoLon={myCoords?.longitude} */}
               </Route>
               <Route exact path="/weather/:lat/:lon">
@@ -96,9 +93,10 @@ const App = () => {
               <Route exact path="/weather">
                 <Weather />
               </Route>
+              <Redirect exact from="/" to={ "/weather/" + geoLat + "/" + geoLon } />
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
-              <IonTabButton tab="home" href="/" mode="ios">
+              <IonTabButton tab="map" href="/map" mode="ios">
                 <IonIcon icon={ map } />
                 <IonLabel>Kort</IonLabel>
               </IonTabButton>
@@ -108,8 +106,8 @@ const App = () => {
                 </IonTabButton>
               }
               { listMenuItem && listMenuItem.map((n, key) => (
-                <IonTabButton tab={"list" + key} href={"/weather/" + n} className="custom-list" key={key} mode="ios">
-                  <IonIcon icon={ informationCircle } />
+                <IonTabButton tab={"list" + key} href={"/weather/" + n.latlon} className="custom-list" key={key} mode="ios">
+                  <img className="tab-flag" src={ "https://cdn.countryflags.com/thumbs/" + n?.country + "/flag-square-250.png" } alt="" />
                 </IonTabButton>
               )) }
               <IonTabButton tab="weather" href="/weather" mode="ios">
