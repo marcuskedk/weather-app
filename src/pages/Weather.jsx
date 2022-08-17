@@ -36,7 +36,7 @@ const Weather = () => {
         setLoading(true);
       });
     });
-  }, [!location]);
+  }, [location]);
 
   var uv_data = "";
   var uv_description = "";
