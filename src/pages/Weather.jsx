@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { IonGrid, IonRow, IonCol, IonContent, IonCardContent, IonIcon, IonFooter, IonHeader, IonToolbar, IonSearchbar, IonTitle, IonCard, IonProgressBar } from '@ionic/react';
 import { sunnyOutline } from "ionicons/icons";
 import '@ionic/react/css/ionic-swiper.css';
 import 'swiper/css';
-import WeatherSlider from "../components/WeatherSlider";
+import WeatherOptions from "../components/WeatherOptions";
+import CountUp from 'react-countup';
 
 const key = {
   weatherapi: "444f6a125e314ab392590227221208"
@@ -18,85 +19,24 @@ const base = {
 
 const Weather = () => {
   const location = useParams();
-  const [ searchText, setSearchText ] = useState('');
-  const [ weatherDataBySearch, setWeatherBySearch ] = useState('');
-  const [ weatherDataByName, setWeatherByName ] = useState('');
   const [ WA_Current, setWA_Current ] = useState('');
   const [ WA_Forecast, setWA_Forecast ] = useState('');
   const [ loading, setLoading ] = useState(false);
-
-  var type = "";
-  var lat = "";
-  var lon = "";
-  if (location.lat) {
-    type = location.lat + "," + location.lon;
-    lat = location.lat;
-    lon = location.lon;
-  } else {
-    if (searchText.length > 0) {
-      type = searchText;
-      lat = "56.4";
-      lon = "10.89";
-    } else {
-      type = "Grenaa";
-      lat = "56.4";
-      lon = "10.89";
-    }
-  }
+  const type = location.lat + "," + location.lon;
 
   useEffect(() => {
-      axios.get(base.weatherAPI_C + "&q=" + lat + "," + lon + "&units=metric&lang=da")
-      .then( res1 => {
-        if (location.lat) {
-          setWeatherByName(res1.data)
-        } else {
-          setWeatherBySearch(res1.data)
-        }
+    axios.get(base.weatherAPI_C + "&q=" + type + "&lang=da&alerts=yes")
+    .then( WA1 => {
+      setWA_Current(WA1.data);
+
+      axios.get(base.weatherAPI_F + "&q=" + type + "&lang=da&days=1&alerts=yes")
+      .then( WA2 => {
+        setWA_Forecast(WA2.data);
+
         setLoading(true);
-
-        {/* CURRENT */}
-        axios.get(base.weatherAPI_C + "&q=" + type + "&lang=da")
-        .then( wap1 => setWA_Current(wap1.data))
-        .catch((error) => console.error(error));
-        
-        {/* FORECAST */}
-        axios.get(base.weatherAPI_F + "&q=" + type + "&lang=da&days=1")
-        .then( wap2 => setWA_Forecast(wap2.data))
-        .catch((error) => console.error(error));
-      })
-      .catch((error) => console.error(error));
-  }, [searchText, location]);
-
-  const BySearch = (
-    <>
-      <IonContent>
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Søg præcis efter hvilken by...</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonToolbar>
-          <IonSearchbar mode="ios" value={searchText} placeholder="Søg efter by..." onIonChange={e => setSearchText(e.detail.value)}></IonSearchbar>
-        </IonToolbar>
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <IonCard>
-                <IonCardContent>
-                  her
-                </IonCardContent>
-              </IonCard>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-        <IonFooter>
-          <IonToolbar>
-            Search Text: {searchText ?? '(none)'} {weatherDataBySearch?.name} {weatherDataBySearch?.main?.feels_like}
-          </IonToolbar>
-        </IonFooter>
-      </IonContent>
-    </>
-  );
+      });
+    });
+  }, [!location]);
 
   var uv_data = "";
   var uv_description = "";
@@ -118,26 +58,22 @@ const Weather = () => {
     uv_description = "Ekstra solbeskyttelse påkrævet";
   }
 
-  const ByName = (
+  const WeatherView = (
     <>
       <IonContent className="clouds">
-        <div id="background-wrap">
+        <div className="background-wrap">
             <div className="x1">
                 <img src={ WA_Current?.current?.condition?.icon } alt="" />
             </div>
-
             <div className="x2">
                 <img src={ WA_Current?.current?.condition?.icon } alt="" />
             </div>
-
             <div className="x3">
                 <img src={ WA_Current?.current?.condition?.icon } alt="" />
             </div>
-
             <div className="x4">
                 <img src={ WA_Current?.current?.condition?.icon } alt="" />
             </div>
-
             <div className="x5">
                 <img src={ WA_Current?.current?.condition?.icon } alt="" />
             </div>
@@ -166,7 +102,7 @@ const Weather = () => {
                       <IonCardContent className="text-custom fw-400">
                         <h4 className="text-custom fw-400 d-flex">VEJRUDSIGT FOR RESTEN AF DAGEN. <span className="ms-auto">R = Regn, S = Sne</span></h4>
                         <div className="mt-auto">
-                          <WeatherSlider type={ type } days={ 1 } option="slider" />
+                          <WeatherOptions type={ type } days={ 1 } option="slider" />
                         </div>
                       </IonCardContent>
                     </IonCard>
@@ -176,7 +112,7 @@ const Weather = () => {
                       <IonCardContent className="pb-0 text-custom fw-400">
                         <h4 className="text-custom fw-400 d-flex">VEJRUDSIGT FOR DE NÆSTE 10 DAGE.</h4>
                         <hr className="bg-custom-2 w-100" />
-                        <WeatherSlider type={ type } days={ 10 } option="list" />
+                        <WeatherOptions type={ type } days={ 10 } option="list" />
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
@@ -184,10 +120,10 @@ const Weather = () => {
                     <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
                         <h4 className="text-custom fw-400 d-flex"><IonIcon className="me-1" icon={ sunnyOutline } /> UV-INDEKS</h4>
-                        <p className="fs-3">{ this_uv }</p>
-                        <p>{ uv_data }</p>
+                        <p className="fs-3"><CountUp start={0} end={ this_uv } duration={1} /></p>
+                        <p className="fs-5">{ uv_data }</p>
                         <div className="uv-index-gauge">
-                          <span className={ "dot index-" + Math.round(this_uv) } style={{left: `calc(9.09% * ${Math.round(this_uv)}%)`}}></span>
+                          <span className={ "dot index-" + this_uv } style={{left: `calc(9.09% * ${this_uv})`}}></span>
                         </div>
                         <p className="mt-auto fs-7">{ uv_description }</p>
                       </IonCardContent>
@@ -204,7 +140,7 @@ const Weather = () => {
                   <IonCol size="6" size-md="6" className="card-custom-h">
                     <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
-                        <h4 className="text-custom fw-400">VIND</h4>
+                        <h4 className="text-custom fw-400 d-flex"><IonIcon className="me-1" icon={ sunnyOutline } />VIND</h4>
                         <div className="compass">
                           <div className="compass-circle">
                             <img src="../../assets/compass-circle.svg" alt="" />
@@ -215,7 +151,10 @@ const Weather = () => {
                             <span className="S">S</span>
                             <span className="W">V</span>
                           </div>
-                          <span className="incircle-text"><b>{ WA_Current?.current?.vis_miles }</b><span className="second">m/s</span></span>
+                          <div className="incircle-text">
+                            <span className="first"><CountUp start={0} end={ WA_Current?.current?.vis_miles } duration={1} /></span>
+                            <span className="second">m/s</span>
+                          </div>
                           <div className="arrow">
                             <img src="../../assets/arrow-n.png" className={ "direction-" + WA_Current?.current?.wind_dir } style={{transform: `rotate(${WA_Current?.current?.wind_degree}deg)`}} alt="" />
                           </div>
@@ -226,8 +165,8 @@ const Weather = () => {
                   <IonCol size="6" size-md="6" className="card-custom-h">
                     <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
-                        <h4 className="text-custom fw-400">REGN</h4>
-                        <p className="fs-3">{ WA_Current?.current?.precip_mm } mm</p>
+                        <h4 className="text-custom fw-400 d-flex"><IonIcon className="me-1" icon={ sunnyOutline } />REGN</h4>
+                        <p className="fs-3"><CountUp start={0} end={ WA_Current?.current?.precip_mm } duration={1} /> mm</p>
                         <p className="fs-7">i de sidste <br />24 timer</p>
                       </IonCardContent>
                     </IonCard>
@@ -235,8 +174,8 @@ const Weather = () => {
                   <IonCol size="6" size-md="6" className="card-custom-h">
                     <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
-                        <h4 className="text-custom fw-400">FØLES SOM</h4>
-                        <p className="fs-3">{ Math.round(WA_Current?.current?.feelslike_c) }&deg;</p>
+                        <h4 className="text-custom fw-400 d-flex"><IonIcon className="me-1" icon={ sunnyOutline } />FØLES SOM</h4>
+                        <p className="fs-3"><CountUp start={0} end={ Math.round(WA_Current?.current?.feelslike_c) } duration={1} />&deg;</p>
                         <p className="mt-auto fs-7">Svarende til den faktiske temperatur.</p>
                       </IonCardContent>
                     </IonCard>
@@ -244,27 +183,30 @@ const Weather = () => {
                   <IonCol size="6" size-md="6" className="card-custom-h">
                     <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
-                      LUFTFUGTIGHED
+                        <h4 className="text-custom fw-400 d-flex"><IonIcon className="me-1" icon={ sunnyOutline } />LUFTFUGTIGHED</h4>
+                        <p className="fs-3"><CountUp start={0} end={ WA_Current?.current?.humidity } duration={1} /> %</p>
+                        <p className="mt-auto fs-7">Dugpunktet er 16&deg; lige nu.</p>
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
                   <IonCol size="6" size-md="6" className="card-custom-h">
                     <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
-                        SIGTBARHED
-                        <hr className="bg-white" />
+                        <h4 className="text-custom fw-400 d-flex"><IonIcon className="me-1" icon={ sunnyOutline } />SIGTBARHED</h4>
+                        <p className="fs-3"><CountUp start={0} end={ WA_Current?.current?.gust_kph } duration={1} /> km</p>
+                        <p className="mt-auto fs-7">Det klart lige nu.</p>
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
                   <IonCol size="6" size-md="6" className="card-custom-h">
                     <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
-                        LUFTTRYK
-                        <hr className="bg-white" />
+                        <h4 className="text-custom fw-400 d-flex"><IonIcon className="me-1" icon={ sunnyOutline } />LUFTTRYK</h4>
+                        <p className="mt-auto fs-7">Det klart lige nu.</p>
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
-                  <IonCol size="6" size-md="6" className="card-custom-h">
+                  <IonCol size="12" size-md="12" className="card-custom-h">
                     <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="">
                         <h2>Rapporter et problem</h2>
@@ -273,18 +215,18 @@ const Weather = () => {
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
-                  <IonCol size="6" size-md="6" className="card-custom-h">
-                    <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
-                      <IonCardContent className="">
-                      Åben i kort
-                      </IonCardContent>
-                    </IonCard>
+                  <IonCol size="12" size-md="12" className="card-custom-h">
+                    <div className="">
+                      <hr className="bg-custom-2" />
+                      <Link to="/map" className="w-100 d-block d-flex py-2 ion-align-items-center text-underline-none">Åben i kort<IonIcon className="ms-auto" icon={ sunnyOutline } /></Link>
+                      <hr className="bg-custom-2" />
+                    </div>
                   </IonCol>
                   <IonCol size="12" size-md="12" className="card-custom-h">
-                    <IonCardContent className="text-center">
+                    <div className="text-center">
                       Vejroplysninger for Ydesvej<br />
                       <a href="">Læs mere om vejrdata og kortdata</a>
-                    </IonCardContent>
+                    </div>
                   </IonCol>
                 </IonRow>
               </IonCol>
@@ -296,7 +238,7 @@ const Weather = () => {
 
   return (
     <>
-      { loading ? weatherDataBySearch ? BySearch : weatherDataByName && ByName : <IonProgressBar color="primary" type="indeterminate"></IonProgressBar> }
+      { loading ? WeatherView : <IonProgressBar color="primary" type="indeterminate"></IonProgressBar> }
     </>
   )
 }

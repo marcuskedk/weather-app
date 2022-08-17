@@ -12,9 +12,10 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { map, informationCircle, listOutline, navigateCircle } from 'ionicons/icons';
+import { map, listOutline, navigateCircle } from 'ionicons/icons';
 import Home from './pages/Home';
 import Weather from './pages/Weather';
+import List from './pages/List';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -90,8 +91,8 @@ const App = () => {
               <Route exact path="/weather/:lat/:lon">
                 <Weather />
               </Route>
-              <Route exact path="/weather">
-                <Weather />
+              <Route exact path="/list">
+                <List />
               </Route>
               <Redirect exact from="/" to={ "/weather/" + geoLat + "/" + geoLon } />
             </IonRouterOutlet>
@@ -106,13 +107,13 @@ const App = () => {
                 </IonTabButton>
               }
               { listMenuItem && listMenuItem.map((n, key) => (
-                <IonTabButton tab={"list" + key} href={"/weather/" + n.latlon} className="custom-list" key={key} mode="ios">
+                <IonTabButton tab={"menu" + key} href={"/weather/" + n.latlon} className="custom-list" key={key} mode="ios">
                   <img className="tab-flag" src={ "https://cdn.countryflags.com/thumbs/" + n?.country + "/flag-square-250.png" } alt="" />
                 </IonTabButton>
               )) }
-              <IonTabButton tab="weather" href="/weather" mode="ios">
+              <IonTabButton tab="list" href="/list" mode="ios">
                 <IonIcon icon={ listOutline } />
-                <IonLabel>Vejr</IonLabel>
+                <IonLabel>List</IonLabel>
                 <IonBadge>6</IonBadge>
               </IonTabButton>
             </IonTabBar>
