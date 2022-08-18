@@ -57,7 +57,7 @@ const App = () => {
   const [ error, setError] = useState(null);
   const [ geoLat, setGeoLat] = useLocalStorage('geoLat', []);
   const [ geoLon, setGeoLon] = useLocalStorage('geoLon', []);
-  const [myCoords, setMyCoords] = useState();
+  const [ myCoords, setMyCoords ] = useState();
 
   useEffect(() => {
     (async () => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useLocation } from 'react-router-dom';
-import { IonGrid, IonRow, IonCol, IonContent, IonCardContent, IonIcon, IonFooter, IonHeader, IonToolbar, IonSearchbar, IonTitle, IonCard, IonProgressBar } from '@ionic/react';
+import { useParams, Link } from 'react-router-dom';
+import { IonGrid, IonRow, IonCol, IonContent, IonCardContent, IonIcon, IonCard, IonProgressBar } from '@ionic/react';
 import { sunnyOutline } from "ionicons/icons";
 import '@ionic/react/css/ionic-swiper.css';
 import 'swiper/css';
@@ -36,6 +36,9 @@ const Weather = () => {
         setLoading(true);
       });
     });
+    return () => {
+      
+    }
   }, [location]);
 
   var uv_data = "";
@@ -225,7 +228,7 @@ const Weather = () => {
                   <IonCol size="12" size-md="12" className="card-custom-h">
                     <div className="text-center">
                       Vejroplysninger for Ydesvej<br />
-                      <a href="">Læs mere om vejrdata og kortdata</a>
+                      <Link to="/map" className="text-underline-none">Læs mere om vejrdata og kortdata</Link>
                     </div>
                   </IonCol>
                 </IonRow>
