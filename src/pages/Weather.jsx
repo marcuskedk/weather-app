@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from 'react-router-dom';
-import { IonGrid, IonRow, IonCol, IonContent, IonCardContent, IonIcon, IonCard, IonProgressBar } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonContent, IonCardContent, IonIcon, IonCard, IonProgressBar, IonButton } from '@ionic/react';
 import { sunnyOutline } from "ionicons/icons";
 import '@ionic/react/css/ionic-swiper.css';
 import 'swiper/css';
@@ -61,6 +61,10 @@ const Weather = () => {
     uv_description = "Ekstra solbeskyttelse påkrævet";
   }
 
+  const deleteThis = () => {
+    console.log("first")
+  }
+
   const WeatherView = (
     <>
       <IonContent className="clouds">
@@ -100,7 +104,10 @@ const Weather = () => {
                       H: { Math.round(WA_Forecast?.forecast?.forecastday[0]?.day?.maxtemp_c) }&deg;  L: { Math.round(WA_Forecast?.forecast?.forecastday[0]?.day?.mintemp_c) }&deg;
                     </p>
                   </IonCol>
-                  <IonCol size="12" className="card-custom-h">
+                  <IonCol size-md="12" size="12" className="card-custom-h">
+                    <div className="d-flex w-100" style={{padding: "5px 10px"}}><IonButton to="#" className="ms-auto" color="danger" onClick={() => deleteThis(type)}>Slet { WA_Current?.location?.name }</IonButton></div>
+                  </IonCol>
+                  <IonCol size-md="12" size="12" className="card-custom-h">
                     <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="text-custom fw-400">
                         <h4 className="text-custom fw-400 d-flex">VEJRUDSIGT FOR RESTEN AF DAGEN. <span className="ms-auto">R = Regn, S = Sne</span></h4>
@@ -110,7 +117,7 @@ const Weather = () => {
                       </IonCardContent>
                     </IonCard>
                   </IonCol>
-                  <IonCol size="12" className="card-custom-h">
+                  <IonCol size-md="12" size="12" className="card-custom-h">
                     <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
                       <IonCardContent className="pb-0 text-custom fw-400">
                         <h4 className="text-custom fw-400 d-flex">VEJRUDSIGT FOR DE NÆSTE 10 DAGE.</h4>

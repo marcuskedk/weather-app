@@ -20,8 +20,6 @@ const Home = ({comeatme, wack, geoLat, geoLon}) => {
     const map = useMapEvents({
       click: (e) => {
         setDataLatLon({lat: e.latlng.lat,  lon: e.latlng.lng} )
-        console.log(dataLatLon)
-        
       }
     })
     return null
@@ -39,7 +37,6 @@ const Home = ({comeatme, wack, geoLat, geoLon}) => {
   useEffect (() => {
     setMyspot(L.icon({ 
       iconUrl: "/assets/icon/marker-icon.png", 
-      // iconSize: [20, 32]
       iconSize: [20, 32],
       iconAnchor: [10, 35],
       popupAnchor: [0, -30],

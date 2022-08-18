@@ -5,6 +5,17 @@
 	font-weight: 400;
 }
 
+ion-content.active {
+	// overwrite inline styles
+	--offset-bottom: auto !important;
+	--overflow: hidden;
+	overflow: hidden;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
 .backdrop {
 	position: absolute;
 	top: 0;
@@ -20,42 +31,64 @@
 	display: block;
 }
 
-ion-searchbar {
-	z-index: 600;
+.search-box {
+	position: relative;
+
+	.search-values {
+		position: absolute;
+		left: 0;
+		// top: 0;
+		width: 100%;
+	}
+}
+
+.search-r {
+	display: block;
+	padding: 5px;
+	text-decoration: none;
+	color: #c8c8c8;
+	font-size: .9rem;
+}
+
+.search-r:hover {
+	background-color: #c8c8c81a;
+	color: #FFF;
 }
 
 .leaflet-popup-content {
-    margin: .5rem;
-    padding: .5rem;
-    min-width: 150px;
+	margin: .5rem;
+	padding: .5rem;
+	min-width: 150px;
 }
 
 .leaflet-popup-content-wrapper {
-    box-shadow: 1px 1px 15px rgba(0, 0, 0, .5);
-    background-color: #6DF9E5;
-    border-radius: 5px;
-    h1 {
-        font-weight: 600;
-        font-size: 1rem;
-        margin: 0;
-    }
-    p {
-        margin: .25rem 0 0 0;
-    }
+	box-shadow: 1px 1px 15px rgba(0, 0, 0, .5);
+	background-color: #6DF9E5;
+	border-radius: 5px;
+
+	h1 {
+		font-weight: 600;
+		font-size: 1rem;
+		margin: 0;
+	}
+
+	p {
+		margin: .25rem 0 0 0;
+	}
 }
 
 .leaflet-popup-tip {
-    background-color: #6DF9E5;
+	background-color: #6DF9E5;
 }
 
 .leaflet-container {
-    width: 100vw;
-    height: 100vh;
+	width: 100vw;
+	height: 100vh;
 }
 
 .yes {
-    font-size: 4em;
-    color: white;
+	font-size: 4em;
+	color: white;
 }
 
 .text-start {
@@ -81,64 +114,75 @@ ion-searchbar {
 
 .fw-100 {
 	font-weight: 100;
-    font-style: normal;
-    font-stretch: normal;
+	font-style: normal;
+	font-stretch: normal;
 }
+
 .fw-100-i {
 	font-weight: 100;
-    font-style: italic;
-    font-stretch: normal;
+	font-style: italic;
+	font-stretch: normal;
 }
+
 .fw-300 {
 	font-weight: 300;
-    font-style: normal;
-    font-stretch: normal;
+	font-style: normal;
+	font-stretch: normal;
 }
+
 .fw-300-i {
 	font-weight: 300;
-    font-style: italic;
-    font-stretch: normal;
+	font-style: italic;
+	font-stretch: normal;
 }
+
 .fw-400 {
 	font-weight: 400;
-    font-style: normal;
-    font-stretch: normal;
+	font-style: normal;
+	font-stretch: normal;
 }
+
 .fw-400-i {
 	font-weight: 400;
-    font-style: italic;
-    font-stretch: normal;
+	font-style: italic;
+	font-stretch: normal;
 }
+
 .fw-500 {
 	font-weight: 500;
-    font-style: normal;
-    font-stretch: normal;
+	font-style: normal;
+	font-stretch: normal;
 }
+
 .fw-500-i {
 	font-weight: 500;
-    font-style: italic;
-    font-stretch: normal;
+	font-style: italic;
+	font-stretch: normal;
 }
+
 .fw-700 {
 	font-weight: 700;
-    font-style: normal;
-    font-stretch: normal;
+	font-style: normal;
+	font-stretch: normal;
 }
+
 .fw-700-i {
 	font-weight: 700;
-    font-style: italic;
-    font-stretch: normal;
+	font-style: italic;
+	font-stretch: normal;
 }
+
 .fw-900 {
 	font-weight: 900;
-    font-style: normal;
-    font-stretch: normal;
-	
+	font-style: normal;
+	font-stretch: normal;
+
 }
+
 .fw-900-i {
 	font-weight: 900;
-    font-style: italic;
-    font-stretch: normal;
+	font-style: italic;
+	font-stretch: normal;
 }
 
 .text-custom {
@@ -190,6 +234,7 @@ ion-searchbar {
 	align-items: center;
 	justify-content: center;
 	z-index: 1;
+
 	.compass-circle {
 		position: absolute;
 		top: 50%;
@@ -199,6 +244,7 @@ ion-searchbar {
 		width: 100%;
 		z-index: -1;
 	}
+
 	.circle {
 		position: absolute;
 		top: 50%;
@@ -209,24 +255,28 @@ ion-searchbar {
 		border-radius: 150px;
 		height: calc(100% - 50%);
 		width: calc(100% - 50%);
+
 		.N {
 			position: absolute;
 			top: -14px;
 			left: 50%;
 			transform: translate(-50%, -50%);
 		}
+
 		.E {
 			position: absolute;
 			top: 50%;
 			left: 91px;
 			transform: translate(-50%, -50%);
 		}
+
 		.S {
 			position: absolute;
 			top: 91px;
 			left: 50%;
 			transform: translate(-50%, -50%);
 		}
+
 		.W {
 			position: absolute;
 			top: 50%;
@@ -234,22 +284,26 @@ ion-searchbar {
 			transform: translate(-50%, -50%);
 		}
 	}
+
 	.incircle-text {
 		position: absolute;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
 		text-align: center;
+
 		.first {
 			font-size: 1.5rem;
 			margin-bottom: -10px;
 			display: block;
 			font-weight: 600;
 		}
+
 		.second {
 			display: block;
 		}
 	}
+
 	.arrow {
 		width: 100%;
 		// width: 240px;
@@ -258,6 +312,7 @@ ion-searchbar {
 		left: 50%;
 		transform: translate(-50%, -50%);
 		z-index: -1;
+
 		img {
 			transition: all .3s;
 		}
@@ -266,10 +321,12 @@ ion-searchbar {
 
 .card-custom-h {
 	padding: .75rem .5rem;
+
 	.card-custom-h-content {
 		min-height: 180px;
 		height: 100%;
 		margin-top: 0;
+
 		ion-card-content {
 			display: flex;
 			flex-direction: column;
@@ -367,10 +424,12 @@ ion-searchbar {
 
 .weather-for-days .border-me:last-child {
 	border-bottom: 0 !important;
+
 	.py-2 {
 		padding-bottom: 0 !important;
 	}
 }
+
 .weather-for-days .border-me {
 	border-bottom: 1px solid rgba(126, 194, 253, .4);
 }
@@ -414,6 +473,8 @@ ion-searchbar {
 
 .tab-flag {
 	width: 25px;
+	height: 25px;
+	object-fit: cover;
 	border-radius: 160px;
 }
 
@@ -423,12 +484,14 @@ ion-searchbar {
 	height: 5px;
 	border-radius: 150px;
 	background: rgba(255, 255, 255, .3);
+
 	.bar {
 		position: absolute;
 		height: 5px;
 		border-radius: 150px;
 		background: linear-gradient(to right, #39D154, #FEC907, #FF772A, #FB3868, #C655E2);
 	}
+
 	.dot {
 		transition: all .3s;
 		position: absolute;
@@ -449,6 +512,7 @@ ion-searchbar {
 	height: 5px;
 	border-radius: 150px;
 	background: linear-gradient(to right, #39D154, #FEC907, #FF772A, #FB3868, #C655E2);
+
 	.dot {
 		transition: all .3s;
 		position: absolute;
@@ -541,6 +605,7 @@ ion-searchbar {
 	right: 0;
 	top: 0;
 	z-index: -1;
+
 	div img {
 		opacity: .5;
 	}

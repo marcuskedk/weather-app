@@ -92,7 +92,7 @@ const App = () => {
                 <Weather />
               </Route>
               <Route exact path="/list">
-                <List />
+                <List comeatme={setListMenuItem} wack={listMenuItem} />
               </Route>
               <Redirect exact from="/" to={ "/weather/" + geoLat + "/" + geoLon } />
             </IonRouterOutlet>
@@ -108,13 +108,13 @@ const App = () => {
               }
               { listMenuItem && listMenuItem.map((n, key) => (
                 <IonTabButton tab={"menu" + key} href={"/weather/" + n.latlon} className="custom-list" key={key} mode="ios">
-                  <img className="tab-flag" src={ "https://cdn.countryflags.com/thumbs/" + n?.country + "/flag-square-250.png" } alt="" />
+                  <img className="tab-flag" src={ n?.country?.length === 2 ? "https://countryflagsapi.com/svg/" + n?.country : "https://cdn.countryflags.com/thumbs/" + n?.country + "/flag-square-250.png" } alt="" />
                 </IonTabButton>
               )) }
               <IonTabButton tab="list" href="/list" mode="ios">
                 <IonIcon icon={ listOutline } />
                 <IonLabel>List</IonLabel>
-                <IonBadge>6</IonBadge>
+                <IonBadge>{ listMenuItem.length + 1 }</IonBadge>
               </IonTabButton>
             </IonTabBar>
           </IonTabs>
