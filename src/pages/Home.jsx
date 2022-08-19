@@ -18,7 +18,7 @@ const Home = ({comeatme, wack, geoLat, geoLon}) => {
   const position = [56.41306112723902, 10.803491093554731];
 
   const Cordinates = () => {
-    const map = useMapEvents({
+    useMapEvents({
       click: (e) => {
         setDataLatLon({lat: e.latlng.lat,  lon: e.latlng.lng} )
       }
@@ -32,7 +32,7 @@ const Home = ({comeatme, wack, geoLat, geoLon}) => {
       setData(res.data);
       setLoading(true);
     }).catch((error) => {
-      if (geoLat.length == 0) { 
+      if (geoLat.length === 0) { 
         setShowAlert2(true) 
       }
     });

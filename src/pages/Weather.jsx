@@ -41,7 +41,7 @@ const Weather = ({comeatme, wack, geoLat, geoLon, myCoords}) => {
     return () => {
       
     }
-  }, [location]);
+  }, [type]);
 
   var uv_data = "";
   var uv_description = "";
@@ -65,7 +65,7 @@ const Weather = ({comeatme, wack, geoLat, geoLon, myCoords}) => {
 
   const deleteThis = (type) => {
     var data = [];
-    if (wack.length == 1) {
+    if (wack.length === 1) {
       localStorage.clear();
     } else {
       data = wack.filter((val) => val.latlon !== type);

@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { IonRow, IonCol } from '@ionic/react';
-import Tooltip from '@mui/material/Tooltip';
 import { useWindowSize } from "usehooks-ts";
 import CountUp from 'react-countup';
 import '@ionic/react/css/ionic-swiper.css';

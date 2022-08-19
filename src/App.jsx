@@ -9,8 +9,7 @@ import {
   IonTabButton,
   IonTabs,
   IonBadge,
-  setupIonicReact,
-  IonAlert
+  setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { map, listOutline, navigateCircle } from 'ionicons/icons';

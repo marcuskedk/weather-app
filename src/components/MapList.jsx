@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLocalStorage } from 'usehooks-ts'
-import { IonCol, IonCardContent, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonProgressBarIonList, IonListHeader, IonSkeletonText, IonItem, IonThumbnail, IonLabel, IonList, IonRow } from '@ionic/react';
+import { IonCol, IonCardContent, IonCard, IonCardHeader, IonCardTitle } from '@ionic/react';
 
 const key = {
     weatherapi: "444f6a125e314ab392590227221208"
@@ -15,24 +15,24 @@ const base = {
 
 const MapList = ({latlon, type}) => {
     const [ LatLonData, setLatLonData ] = useState();
-    const [ geoLat, setGeoLat] = useLocalStorage('geoLat', []);
-    const [ geoLon, setGeoLon] = useLocalStorage('geoLon', []);
+    const [ geoLat ] = useLocalStorage('geoLat', []);
+    const [ geoLon ] = useLocalStorage('geoLon', []);
 
     useEffect(() => {
         axios.get(base.weatherAPI_F + "&q=" + latlon?.replace("/", ",") + "&lang=da&alerts=yes")
         .then( result => {
             setLatLonData(result.data);
         });
-    }, [])
+    }, [latlon])
 
     return (
         <>
             <IonCol size="12" className="">
                 <IonCard href="" className="bg-custom text-white rounded-custom">
-                    <Link style={{display: "flex", flexWrap: "wrap", textDecoration: "none", color: "#FFF"}} to={ type == "myCorrds" ? "/weather/" + geoLat + "/" + geoLon : type == "list" && "/weather/" + LatLonData?.location?.lat + "/" + LatLonData?.location?.lon }>
+                    <Link style={{display: "flex", flexWrap: "wrap", textDecoration: "none", color: "#FFF"}} to={ type === "myCorrds" ? "/weather/" + geoLat + "/" + geoLon : type === "list" && "/weather/" + LatLonData?.location?.lat + "/" + LatLonData?.location?.lon }>
                         <IonCol size="12">
                             <IonCardHeader>
-                                <IonCardTitle className="d-flex w-100"><div>{ type == "myCorrds" && "Min lokalitet" }{ type == "list" && LatLonData?.location?.name }<br /><span className="fs-7">{ type == "myCorrds" && LatLonData?.location?.name }{ type == "list" && new Date(LatLonData?.location?.localtime).toLocaleTimeString( 'da-dk', { hour: "2-digit", minute: "2-digit" }) }</span></div><span className="ms-auto fs-3">{ Math.round(LatLonData?.current?.temp_c) }&deg;</span></IonCardTitle>
+                                <IonCardTitle className="d-flex w-100"><div>{ type === "myCorrds" && "Min lokalitet" }{ type === "list" && LatLonData?.location?.name }<br /><span className="fs-7">{ type === "myCorrds" && LatLonData?.location?.name }{ type === "list" && new Date(LatLonData?.location?.localtime).toLocaleTimeString( 'da-dk', { hour: "2-digit", minute: "2-digit" }) }</span></div><span className="ms-auto fs-3">{ Math.round(LatLonData?.current?.temp_c) }&deg;</span></IonCardTitle>
                             </IonCardHeader>
                         </IonCol>
                         <IonCol size="12">
