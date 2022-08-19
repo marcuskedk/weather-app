@@ -4,11 +4,12 @@ import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from "react-leaf
 import { IonAlert, IonButton } from '@ionic/react';
 import L from "leaflet"
 import "leaflet/dist/leaflet.css";
+import LinearProgress from '@mui/material/LinearProgress';
 
 const base = "https://api.weatherapi.com/v1/current.json?key=444f6a125e314ab392590227221208" 
 
 const Home = ({comeatme, wack, geoLat, geoLon}) => {
-  const [ dataLatLon, setDataLatLon ] = useState({ lat: geoLat, lon: geoLon }); {/* lat: geoLat, lon: geoLon */}
+  const [ dataLatLon, setDataLatLon ] = useState({ lat: geoLat.length > 0 ? geoLat : 56.41306112723902, lon: geoLon.length > 0 ? geoLon : 10.803491093554731 }); {/* lat: geoLat, lon: geoLon */}
   const [ loading, setLoading ] = useState(true);
   const [ data, setData ] = useState({});
   const [ showAlert, setShowAlert ] = useState(false);
@@ -30,8 +31,11 @@ const Home = ({comeatme, wack, geoLat, geoLon}) => {
     .then( res => {
       setData(res.data);
       setLoading(true);
-    })
-    .catch((error) => setShowAlert2(true));
+    }).catch((error) => {
+      if (geoLat.length == 0) { 
+        setShowAlert2(true) 
+      }
+    });
   }, [dataLatLon]);
 
   useEffect (() => {
@@ -97,7 +101,7 @@ const Home = ({comeatme, wack, geoLat, geoLon}) => {
           </MapContainer>
         </>
         :
-        <span>s</span>
+        <LinearProgress />
       }
     </>
   );

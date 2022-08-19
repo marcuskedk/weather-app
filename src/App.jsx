@@ -9,7 +9,8 @@ import {
   IonTabButton,
   IonTabs,
   IonBadge,
-  setupIonicReact
+  setupIonicReact,
+  IonAlert
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { map, listOutline, navigateCircle } from 'ionicons/icons';
@@ -53,8 +54,6 @@ const base = {
 
 const App = () => {
   const [ listMenuItem, setListMenuItem ] = useLocalStorage('addedToList', []);
-  const [ loading, setLoading] = useState(true);
-  const [ error, setError] = useState(null);
   const [ geoLat, setGeoLat] = useLocalStorage('geoLat', []);
   const [ geoLon, setGeoLon] = useLocalStorage('geoLon', []);
   const [ myCoords, setMyCoords ] = useState();
@@ -67,16 +66,15 @@ const App = () => {
         setGeoLon(coordinates.coords.longitude);
       } catch (error) {
         console.error("Error fetching data: ", error);
-        setError(error);
-      } finally {
-        setLoading(false);
       }
     })()
     axios.get(base.weatherAPI_C + "&q=" + geoLat + "," + geoLon + "&units=metric&lang=da")
     .then( res1 => {
-      setMyCoords(res1.data)
+      setMyCoords(res1.data);
     })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      setMyCoords(null);
+    });
   }, []);
   
   return (
@@ -89,10 +87,13 @@ const App = () => {
                 <Home comeatme={setListMenuItem} wack={listMenuItem} geoLat={geoLat} geoLon={geoLon} /> {/* geoLat={myCoords?.latitude} geoLon={myCoords?.longitude} */}
               </Route>
               <Route exact path="/weather/:lat/:lon">
-                <Weather />
+                <Weather comeatme={setListMenuItem} wack={listMenuItem} geoLat={geoLat} geoLon={geoLon} myCoords={myCoords} />
+              </Route>
+              <Route exact path="/weather/:lat/:lon/:mycoords">
+                <Weather comeatme={setListMenuItem} wack={listMenuItem} geoLat={geoLat} geoLon={geoLon} myCoords={myCoords} />
               </Route>
               <Route exact path="/list">
-                <List comeatme={setListMenuItem} wack={listMenuItem} />
+                <List comeatme={setListMenuItem} wack={listMenuItem} geoLat={geoLat} geoLon={geoLon} />
               </Route>
               <Redirect exact from="/" to={ "/weather/" + geoLat + "/" + geoLon } />
             </IonRouterOutlet>
@@ -102,7 +103,7 @@ const App = () => {
                 <IonLabel>Kort</IonLabel>
               </IonTabButton>
               { myCoords && 
-                <IonTabButton tab={"list" + key} href={"/weather/" + myCoords?.location?.lat + "/" + myCoords?.location?.lon } className="custom-list" key={key} mode="ios">
+                <IonTabButton tab={"list" + key} href={"/weather/" + myCoords?.location?.lat + "/" + myCoords?.location?.lon + "/mycoords" } className="custom-list" key={key} mode="ios">
                   <IonIcon color="secondary" icon={ navigateCircle } />
                 </IonTabButton>
               }
@@ -114,7 +115,7 @@ const App = () => {
               <IonTabButton tab="list" href="/list" mode="ios">
                 <IonIcon icon={ listOutline } />
                 <IonLabel>List</IonLabel>
-                <IonBadge>{ listMenuItem.length + 1 }</IonBadge>
+                <IonBadge>{ geoLat > 0 ? listMenuItem.length + 1 : listMenuItem.length }</IonBadge>
               </IonTabButton>
             </IonTabBar>
           </IonTabs>

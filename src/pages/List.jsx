@@ -1,28 +1,14 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useLocation, Redirect, useHistory } from 'react-router-dom';
-import { IonGrid, IonRow, IonCol, IonContent, IonAlert, IonCardContent, IonIcon, IonFooter, IonBackdrop, IonHeader, IonToolbar, IonSearchbar, IonTitle, IonCard, IonProgressBar } from '@ionic/react';
-import { search, sunnyOutline } from "ionicons/icons";
+import { Link, useHistory } from 'react-router-dom';
+import { IonGrid, IonRow, IonCol, IonContent, IonAlert, IonSearchbar } from '@ionic/react';
 import { useLocalStorage } from 'usehooks-ts'
 import MapList from "../components/MapList"
 import cities from 'cities.json';
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 
-const key = {
-  weatherapi: "444f6a125e314ab392590227221208"
-}
-
-const base = {
-  weatherAPI_C: "https://api.weatherapi.com/v1/current.json?key=" + key.weatherapi,
-  weatherAPI_F: "https://api.weatherapi.com/v1/forecast.json?key=" + key.weatherapi
-}
-
-const List = ({comeatme, wack}) => {
-  const [ listMenuItem, setListMenuItem ] = useLocalStorage('addedToList', []);
-  const [ geoLat, setGeoLat] = useLocalStorage('geoLat', []);
-  const [ geoLon, setGeoLon] = useLocalStorage('geoLon', []);
-  const [ WA_Current, setWA_Current ] = useState('');
-  const [ WA_Forecast, setWA_Forecast ] = useState('');
-  const [ loadingWeather, setLoadingWeather ] = useState(false);
+const List = ({comeatme, wack, geoLat, geoLon}) => {
+  const [ listMenuItem ] = useLocalStorage('addedToList', []);
   const [ searchText, setSearchText ] = useState("");
   const [ backdrop, setBackdrop ] = useState(false);
   const [ data, setData ] = useState([]);
@@ -45,7 +31,6 @@ const List = ({comeatme, wack}) => {
 
   const handleSetData = (sessionData, country) => {
     var data = wack.filter((val) => val.latlon.toLowerCase().includes(sessionData.toLowerCase()));
-    console.log(data)
     if (!data.length) {
       wack.push({
         "latlon": sessionData.toLowerCase(),
@@ -84,7 +69,7 @@ const List = ({comeatme, wack}) => {
                   </div>
                 </div>
               </IonCol>
-              { geoLat && <MapList latlon={ geoLat + "," + geoLon } type="myCorrds" /> }
+              { geoLat > 0 ? <MapList latlon={ geoLat + "," + geoLon } type="myCorrds" /> : "" }
               { listMenuItem && listMenuItem?.map((value, key) => <MapList key={ key } latlon={ value?.latlon } type="list" /> ) }
             </IonRow>
           </IonCol>
@@ -94,17 +79,10 @@ const List = ({comeatme, wack}) => {
     </>
   )
 
-  const Search = (
-    <>
-
-    </>
-  )
-
   return (
     <>
       <IonContent className={ backdrop && "clouds active"}>
-        { listMenuItem ? List : <IonProgressBar color="primary" type="indeterminate"></IonProgressBar> }
-        {/* { loadingWeather ? Search : <IonProgressBar color="primary" type="indeterminate"></IonProgressBar> } */}
+        { listMenuItem ? List : <Box sx={{ width: '100%' }}><LinearProgress /></Box> }
       </IonContent>
     </>
   )
