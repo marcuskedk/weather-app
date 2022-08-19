@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from 'react-router-dom';
-import { IonGrid, IonRow, IonCol, IonContent, IonAlert, IonSearchbar } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonContent, IonAlert, IonSearchbar, IonProgressBar } from '@ionic/react';
 import { useLocalStorage } from 'usehooks-ts'
 import MapList from "../components/MapList"
 import cities from 'cities.json';
-import Box from '@mui/material/Box';
-import LinearProgress from '@mui/material/LinearProgress';
 
 const List = ({comeatme, wack, geoLat, geoLon}) => {
   const [ listMenuItem ] = useLocalStorage('addedToList', []);
@@ -82,7 +80,7 @@ const List = ({comeatme, wack, geoLat, geoLon}) => {
   return (
     <>
       <IonContent className={ backdrop && "clouds active"}>
-        { listMenuItem ? List : <Box sx={{ width: '100%' }}><LinearProgress /></Box> }
+        { listMenuItem ? List : <IonProgressBar color="primary" type="indeterminate"></IonProgressBar> }
       </IonContent>
     </>
   )

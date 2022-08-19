@@ -1,14 +1,12 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from 'react-router-dom';
-import { IonGrid, IonRow, IonCol, IonContent, IonCardContent, IonIcon, IonCard, IonButton } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonContent, IonCardContent, IonIcon, IonCard, IonButton, IonProgressBar } from '@ionic/react';
 import { sunny, cloudyNight, thermometer, calendar, compass, rainy, ellipse, eye, rose, open, chevronForward, helpCircleOutline } from "ionicons/icons";
 import '@ionic/react/css/ionic-swiper.css';
 import 'swiper/css';
 import WeatherOptions from "../components/WeatherOptions";
 import CountUp from 'react-countup';
-import Box from '@mui/material/Box';
-import LinearProgress from '@mui/material/LinearProgress';
 
 const key = {
   weatherapi: "444f6a125e314ab392590227221208"
@@ -133,7 +131,7 @@ const Weather = ({comeatme, wack, geoLat, geoLon, myCoords}) => {
                   </IonCol>
                   <IonCol size-md="12" size="12">
                     <IonCard className="bg-custom text-white rounded-custom card-custom-h-content">
-                      <IonCardContent className="pb-0 text-custom fw-400">
+                      <IonCardContent className="text-custom fw-400">
                         <h4 className="text-custom fw-400 d-flex"><IonIcon className="me-1" icon={ calendar } /> VEJRUDSIGT FOR DE NÆSTE 10 DAGE.</h4>
                         <hr className="bg-custom-2 w-100" />
                         <WeatherOptions type={ type } days={ 10 } option="list" />
@@ -269,7 +267,7 @@ const Weather = ({comeatme, wack, geoLat, geoLon, myCoords}) => {
 
   return (
     <>
-      { loading ? WeatherView : <Box sx={{ width: '100%' }}><LinearProgress /></Box> }
+      { loading ? WeatherView : <IonProgressBar color="primary" type="indeterminate"></IonProgressBar> }
     </>
   )
 }

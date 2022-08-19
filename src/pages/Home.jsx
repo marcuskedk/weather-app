@@ -1,10 +1,9 @@
 import axios from "axios"
 import React, { useState, useEffect } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from "react-leaflet"
-import { IonAlert, IonButton } from '@ionic/react';
+import { IonAlert, IonButton, IonProgressBar } from '@ionic/react';
 import L from "leaflet"
 import "leaflet/dist/leaflet.css";
-import LinearProgress from '@mui/material/LinearProgress';
 
 const base = "https://api.weatherapi.com/v1/current.json?key=444f6a125e314ab392590227221208" 
 
@@ -101,7 +100,7 @@ const Home = ({comeatme, wack, geoLat, geoLon}) => {
           </MapContainer>
         </>
         :
-        <LinearProgress />
+        <IonProgressBar color="primary" type="indeterminate"></IonProgressBar>
       }
     </>
   );

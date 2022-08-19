@@ -22,7 +22,7 @@ const WeatherOptions = ({type, days, option}) => {
     const currentDate = new Date();
     const hours = currentDate.getHours();
 
-    useEffect((days) => {
+    useEffect(() => {
         axios.get(base.weatherAPI_F + "&q=" + type + "&lang=da&days=" + days + "&alerts=yes")
         .then( results => setWA_Forecast(results.data));
     }, [type]);
